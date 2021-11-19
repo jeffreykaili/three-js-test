@@ -43,17 +43,18 @@ function animate() {
     cube.rotation.y += 0.01;
     // camera.fov = Math.max(camera.fov - 0.125, 30);
     // camera.updateProjectionMatrix();
-    if(keyboard[39]) { // right
+    if(camera.position.x < -10 || camera.position.x > 10 || camera.position.z > 10 || camera.position.z < -10) camera.position.y -= 0.1;
+    else if(keyboard[39]) { // right
         camera.rotation.y -= Math.PI * 0.015; 
     }
-    if(keyboard[37]) {
+    else if(keyboard[37]) {
         camera.rotation.y += Math.PI * 0.015; 
     }
-    if(keyboard[40]) { // back 
+    else if(keyboard[40]) { // back 
         camera.position.x += Math.sin(camera.rotation.y) * 0.03; 
         camera.position.z += Math.cos(camera.rotation.y) * 0.03; 
     }
-    if(keyboard[38]) { // forward 
+    else if(keyboard[38]) { // forward 
         camera.position.x -= Math.sin(camera.rotation.y) * 0.03; 
         camera.position.z -= Math.cos(camera.rotation.y) * 0.03; 
     }
