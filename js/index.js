@@ -39,16 +39,17 @@ var keyboard = {};
 
 function animate() {
     requestAnimationFrame(animate);
+    // console.log(camera.position.y); 
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
     // camera.fov = Math.max(camera.fov - 0.125, 30);
     // camera.updateProjectionMatrix();
-    if(camera.position.x < -10 || camera.position.x > 10 || camera.position.z > 10 || camera.position.z < -10) camera.position.y -= 0.1;
-    else if(keyboard[40]) { // back 
+    if(camera.position.x < -10 || camera.position.x > 10 || camera.position.z > 10 || camera.position.z < -10 || camera.position.y < 1) camera.position.y -= 0.1;
+    if(keyboard[40]) { // back 
         camera.position.x += Math.sin(camera.rotation.y) * 0.03; 
         camera.position.z += Math.cos(camera.rotation.y) * 0.03; 
     }
-    else if(keyboard[38]) { // forward 
+    if(keyboard[38]) { // forward 
         camera.position.x -= Math.sin(camera.rotation.y) * 0.03; 
         camera.position.z -= Math.cos(camera.rotation.y) * 0.03; 
     }
@@ -58,7 +59,6 @@ function animate() {
     if(keyboard[37]) { // left 
         camera.rotation.y += Math.PI * 0.015; 
     }
-
     renderer.render(scene, camera);
 }
 
