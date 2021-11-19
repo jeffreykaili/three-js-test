@@ -44,12 +44,6 @@ function animate() {
     // camera.fov = Math.max(camera.fov - 0.125, 30);
     // camera.updateProjectionMatrix();
     if(camera.position.x < -10 || camera.position.x > 10 || camera.position.z > 10 || camera.position.z < -10) camera.position.y -= 0.1;
-    else if(keyboard[39]) { // right
-        camera.rotation.y -= Math.PI * 0.015; 
-    }
-    else if(keyboard[37]) {
-        camera.rotation.y += Math.PI * 0.015; 
-    }
     else if(keyboard[40]) { // back 
         camera.position.x += Math.sin(camera.rotation.y) * 0.03; 
         camera.position.z += Math.cos(camera.rotation.y) * 0.03; 
@@ -58,6 +52,13 @@ function animate() {
         camera.position.x -= Math.sin(camera.rotation.y) * 0.03; 
         camera.position.z -= Math.cos(camera.rotation.y) * 0.03; 
     }
+    if(keyboard[39]) { // right
+        camera.rotation.y -= Math.PI * 0.015; 
+    }
+    if(keyboard[37]) { // left 
+        camera.rotation.y += Math.PI * 0.015; 
+    }
+
     renderer.render(scene, camera);
 }
 
