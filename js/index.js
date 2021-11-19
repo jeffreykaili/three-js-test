@@ -1,6 +1,6 @@
 import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
 
-var camera_info = {height: 1}
+var camera_info = { height: 1, run_speed: 0.03, y_velocity: 0 }
 const scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, camera_info.height, 5); 
@@ -39,25 +39,47 @@ var keyboard = {};
 
 function animate() {
     requestAnimationFrame(animate);
-    // console.log(camera.position.y); 
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
     // camera.fov = Math.max(camera.fov - 0.125, 30);
     // camera.updateProjectionMatrix();
     if(camera.position.x < -10 || camera.position.x > 10 || camera.position.z > 10 || camera.position.z < -10 || camera.position.y < 1) camera.position.y -= 0.1;
-    if(keyboard[40]) { // back 
-        camera.position.x += Math.sin(camera.rotation.y) * 0.03; 
-        camera.position.z += Math.cos(camera.rotation.y) * 0.03; 
+    if(keyboard[83]) { // back 
+        camera.position.x += Math.sin(camera.rotation.y) * camera_info.run_speed; 
+        camera.position.z += Math.cos(camera.rotation.y) * camera_info.run_speed; 
     }
-    if(keyboard[38]) { // forward 
-        camera.position.x -= Math.sin(camera.rotation.y) * 0.03; 
-        camera.position.z -= Math.cos(camera.rotation.y) * 0.03; 
+    if(keyboard[87]) { // forward 
+        camera.position.x -= Math.sin(camera.rotation.y) * camera_info.run_speed; 
+        camera.position.z -= Math.cos(camera.rotation.y) * camera_info.run_speed; 
     }
-    if(keyboard[39]) { // right
+    if(keyboard[68]) { // right 
+        camera.position.x += Math.sin(camera.rotation.y + Math.PI/2) * camera_info.run_speed; 
+        camera.position.z -= Math.cos(camera.rotation.y - Math.PI/2) * camera_info.run_speed; 
+    }
+    if(keyboard[65]) { // left 
+        camera.position.x -= Math.sin(camera.rotation.y + Math.PI/2) * camera_info.run_speed; 
+        camera.position.z += Math.cos(camera.rotation.y - Math.PI/2) * camera_info.run_speed; 
+    }
+    if(keyboard[39]) { // turn right 
         camera.rotation.y -= Math.PI * 0.015; 
     }
-    if(keyboard[37]) { // left 
+    if(keyboard[37]) { // turn left 
         camera.rotation.y += Math.PI * 0.015; 
+    }
+    if(keyboard[32] && camera.position.y == camera_info.height) {
+        camera_info["y_velocity"] = 0.15; 
+    }
+    console.log(camera_info.y_velocity); 
+    if(camera_info.y_velocity != 0) {
+        camera.position.y += camera_info.y_velocity;
+       //  console.log(camera.position.y);  
+        if(camera.position.y < 1) {
+            camera.position.y = 1; 
+            camera_info["y_velocity"] = 0; 
+            console.log("CHANGED"); 
+        } else {
+           camera_info["y_velocity"] -= 0.01; 
+        }
     }
     renderer.render(scene, camera);
 }
